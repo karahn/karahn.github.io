@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gizlilik Politikası — Şantiye Defteri</title>
+  <style>
+    :root { --ink:#1C2B39; --amber:#D97706; --bg:#F5F3EC; --card:#FFFFFF; --line:#E2DEC9; --muted:#57534E; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); line-height:1.65; padding:24px 16px 56px; }
+    .wrap { max-width:780px; margin:0 auto; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:28px 24px; box-shadow:0 6px 24px rgba(0,0,0,0.05); }
+    .badge { display:inline-block; background:#FEF3C7; color:#92400E; font-weight:700; font-size:12px; padding:4px 10px; border-radius:999px; letter-spacing:.04em; text-transform:uppercase; }
+    h1 { margin:10px 0 6px; font-size:26px; }
+    h2 { margin-top:24px; font-size:18px; border-bottom:1px solid var(--line); padding-bottom:6px; }
+    p, li { color:#292524; font-size:15px; }
+    .muted { color:var(--muted); font-size:13px; }
+    a { color:#1D4ED8; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <span class="badge">Şantiye Defteri · com.santiyedefteri.app</span>
+    <h1>Gizlilik Politikası</h1>
+    <p class="muted">Son güncelleme: 22 Ekim 2026 · <a href="./index.html">Ana Sayfa</a> · <a href="./hesap-silme.html">Hesap Silme Merkezi</a></p>
+
+    <p><strong>Şantiye Defteri</strong> uygulaması; şantiye, inşaat ve saha ekiplerinin teklif, fatura, ödeme, avans, firma (cari &amp; kaşe) ve günlük puantaj kayıtlarını güvenle yönetebilmesi amacıyla geliştirilmiştir.</p>
+
+    <h2>1. Yerel Saklama ve İsteğe Bağlı Bulut Yedekleme (Firebase)</h2>
+    <ul>
+      <li>Uygulamayı hesap açmadan kullandığınızda tüm kayıtlarınız yalnızca cihazınızın yerel depolama alanında tutulur.</li>
+      <li>Cihaz değişikliği veya çoklu cihaz (Android, Masaüstü, iOS) eşitlemesi için <strong>Google (Gmail)</strong>, <strong>Apple ile Giriş</strong> veya <strong>E-posta</strong> hesabınızla oturum açmayı seçerseniz; şantiye kayıtlarınız (ve PRO abonelerde PDF ekleriniz ile kaşe görselleriniz) şifreli bağlantı (HTTPS/TLS) üzerinden <strong>Google Firebase (Authentication, Cloud Firestore ve Cloud Storage)</strong> altyapısında yalnızca sizin kullanıcı kimliğinize (UID) özel olarak saklanır.</li>
+      <li>Ticari ve şantiye kayıtlarınız üçüncü taraflara satılmaz veya reklam hedeflemesi amacıyla kullanılmaz.</li>
+    </ul>
+
+    <h2>2. Abonelikler ve Ödeme İşlemleri (Google Play, App Store &amp; RevenueCat)</h2>
+    <ul>
+      <li><strong>Şantiye Defteri PRO</strong> abonelik ödemeleri doğrudan Google Play Faturalandırma veya Apple App Store üzerinden gerçekleştirilir; kredi kartı veya banka bilgileriniz tarafımızca görülmez ve saklanmaz.</li>
+      <li>Abonelik durumunuzun Android, iOS ve Masaüstü cihazlarınız arasında eşleştirilmesi için <strong>RevenueCat</strong> altyapısı üzerinden kullanıcı kimliği ve mağaza satın alma makbuzu doğrulanır.</li>
+    </ul>
+
+    <h2>3. Reklamlar ve Kullanıcı Rızası (Google AdMob &amp; UMP)</h2>
+    <p>Ücretsiz sürümde uygulamanın sürdürülebilmesi amacıyla <strong>Google AdMob</strong> ve <strong>Google User Messaging Platform (UMP)</strong> üzerinden alt bant reklam gösterilir (PRO abonelerde reklam gösterilmez).</p>
+    <ul>
+      <li>Avrupa Ekonomik Alanı (AEA), Birleşik Krallık ve İsviçre'deki kullanıcılara reklam gösterilmeden önce Google sertifikalı rıza formu sunulur; tercihler uygulama menüsündeki <em>Reklam Gizlilik Tercihleri</em> adımından her zaman değiştirilebilir.</li>
+      <li>AdMob; reklam gösterimi, dolandırıcılık önleme ve ölçümleme amacıyla cihazın <strong>Reklam Kimliği (Advertising ID)</strong>, yaklaşık konum ve reklam etkileşim verilerini işleyebilir.</li>
+    </ul>
+
+    <h2 id="hesap-silme">4. Hesap ve Veri Silme Hakkınız</h2>
+    <ul>
+      <li><strong>Uygulama İçinden Anında Silme:</strong> Bulut hesabınızı ve sunucudaki tüm yedeklerinizi uygulama içindeki <strong>☁️ Hesap &amp; Bulut Eşitleme &rarr; Hesabımı Sil</strong> butonuna dokunarak anında ve geri döndürülemez biçimde silebilirsiniz.</li>
+      <li><strong>Uygulamayı Kurmadan Web Üzerinden Silme:</strong> Uygulamayı cihazınızdan kaldırdıysanız <a href="./hesap-silme.html">https://karahn.github.io/hesap-silme.html</a> sayfasından hesabınıza giriş yaparak bulut verilerinizi ve hesabınızı doğrudan tarayıcı üzerinden silebilirsiniz.</li>
+      <li>Yerel cihaz verilerinizi uygulama içinden veya uygulamayı cihazınızdan kaldırarak temizleyebilirsiniz.</li>
+    </ul>
+
+    <h2>5. Çocukların Gizliliği</h2>
+    <p>Şantiye Defteri profesyonel saha ve işletme yönetimi amacıyla 18 yaş ve üzeri yetişkin kullanıcılara yöneliktir.</p>
+
+    <h2>6. İletişim</h2>
+    <p>Gizlilik politikası, kullanım koşulları ve veri silme sorularınız için Google Play Store veya Apple App Store mağaza sayfasında yer alan resmi geliştirici iletişim e-postası üzerinden bizimle iletişime geçebilirsiniz.</p>
+  </main>
+</body>
+</html>

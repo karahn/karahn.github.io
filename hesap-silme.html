@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hesap ve Bulut Verilerini Silme — Şantiye Defteri</title>
+  <style>
+    :root { --ink:#1C2B39; --danger:#B3432B; --danger-bg:#FDF0EE; --bg:#F5F3EC; --card:#FFFFFF; --line:#E2DEC9; --muted:#57534E; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); line-height:1.65; padding:24px 16px 56px; }
+    .wrap { max-width:740px; margin:0 auto; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:28px 24px; box-shadow:0 6px 24px rgba(0,0,0,0.05); }
+    .badge { display:inline-block; background:var(--danger-bg); color:var(--danger); font-weight:700; font-size:12px; padding:4px 10px; border-radius:999px; text-transform:uppercase; }
+    h1 { margin:10px 0 6px; font-size:25px; }
+    h2 { margin-top:22px; font-size:17.5px; border-bottom:1px solid var(--line); padding-bottom:6px; }
+    p, li { font-size:15px; color:#292524; }
+    .box { background:#FCFBF8; border:1px solid var(--line); border-radius:12px; padding:16px; margin-top:14px; }
+    input { width:100%; padding:10px 12px; border:1px solid #C9BFA8; border-radius:8px; font-size:14px; margin-bottom:8px; }
+    button { cursor:pointer; font-weight:600; font-size:14px; padding:10px 16px; border-radius:9px; border:1px solid var(--line); background:#fff; color:var(--ink); }
+    button.danger { background:var(--danger); color:#fff; border-color:var(--danger); }
+    button.primary { background:var(--ink); color:#fff; border-color:var(--ink); }
+    .status { margin-top:12px; font-size:14px; font-weight:600; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <main class="wrap">
+    <span class="badge">Şantiye Defteri · Veri Güvenliği</span>
+    <h1>Hesap ve Bulut Verilerini Silme</h1>
+    <p><a href="./privacy.html">&larr; Gizlilik Politikasına Dön</a></p>
+
+    <p><strong>Şantiye Defteri</strong> (<code>com.santiyedefteri.app</code>) bulut hesabınızı ve ilişkili tüm bulut yedeklerinizi istediğiniz zaman aşağıdaki iki yöntemden biriyle kalıcı olarak silebilirsiniz:</p>
+
+    <h2>Yöntem 1: Uygulama İçinden Tek Dokunuşla Silme</h2>
+    <ol>
+      <li>Şantiye Defteri uygulamasını açın ve üst çubuktaki <strong>☁️ Giriş / Bulut</strong> düğmesine dokunun.</li>
+      <li>Açılan pencerede en altta yer alan <strong>«Hesabımı Sil»</strong> düğmesine dokunup onaylayın.</li>
+      <li>Kullanıcı kimliğiniz (Firebase Auth) ve buluttaki tüm şantiye/firma yedekleriniz (Cloud Firestore) anında silinir.</li>
+    </ol>
+
+    <h2>Yöntem 2: Uygulamayı Yeniden Kurmadan Web Üzerinden Silme</h2>
+    <div class="box">
+      <p style="margin-top:0;">Uygulamayı telefonunuzdan kaldırdıysanız aşağıdan hesabınızı doğrulayarak buluttaki tüm verilerinizi ve hesabınızı doğrudan silebilirsiniz:</p>
+      <div id="auth-area">
+        <button type="button" class="primary" id="google-btn">Google (Gmail) ile Doğrula</button>
+        <p style="margin:12px 0 6px; font-size:13px; color:#57534E;">veya E-posta &amp; Şifre hesabınızla doğrulayın:</p>
+        <input type="email" id="em" placeholder="E-posta adresiniz">
+        <input type="password" id="pw" placeholder="Şifreniz">
+        <button type="button" id="email-btn">E-posta ile Doğrula</button>
+      </div>
+      <div id="delete-area" style="display:none;">
+        <p id="signed-info" style="font-weight:700;"></p>
+        <button type="button" class="danger" id="confirm-del-btn">🗑️ Hesabımı ve Tüm Bulut Verilerimi Kalıcı Olarak Sil</button>
+      </div>
+      <div class="status" id="status-msg"></div>
+    </div>
+
+    <h2>Silinen ve Saklanan Veriler Hakkında Bilgi</h2>
+    <ul>
+      <li><strong>Anında Silinen Veriler:</strong> Firebase Authentication kullanıcı kaydınız (e-posta, UID) ve Cloud Firestore üzerindeki tüm şantiye, teklif, fatura, ödeme, avans, firma ve puantaj yedekleriniz işlem anında kalıcı olarak silinir.</li>
+      <li><strong>Yasal Saklama İstisnası:</strong> Google Play veya Apple App Store üzerinden yapılmış abonelik fatura kayıtları ilgili uygulama mağazalarının kendi vergi/muhasebe mevzuatına tabidir; aktif aboneliğiniz varsa mağazanın <em>Abonelikler</em> menüsünden ayrıca iptal etmeyi unutmayın.</li>
+    </ul>
+  </main>
+
+  <script>
+    firebase.initializeApp({
+      apiKey: "AIzaSyDSjaY2EyJPjpqgPPpJDiqWqly8M8Nohkc",
+      authDomain: "santiye-defteri-36c31.firebaseapp.com",
+      projectId: "santiye-defteri-36c31",
+      storageBucket: "santiye-defteri-36c31.firebasestorage.app",
+      messagingSenderId: "22482904237",
+      appId: "1:22482904237:web:4719ef79deb2d42b4b5224"
+    });
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const st = document.getElementById('status-msg');
+
+    auth.onAuthStateChanged(u => {
+      if (u) {
+        document.getElementById('auth-area').style.display = 'none';
+        document.getElementById('delete-area').style.display = 'block';
+        document.getElementById('signed-info').textContent = 'Doğrulanan hesap: ' + (u.email || u.uid);
+      }
+    });
+
+    document.getElementById('google-btn').onclick = async () => {
+      try {
+        await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      } catch (e) { st.textContent = 'Hata: ' + e.message; }
+    };
+
+    document.getElementById('email-btn').onclick = async () => {
+      try {
+        await auth.signInWithEmailAndPassword(document.getElementById('em').value.trim(), document.getElementById('pw').value);
+      } catch (e) { st.textContent = 'Giriş doğrulanamadı: ' + e.message; }
+    };
+
+    document.getElementById('confirm-del-btn').onclick = async () => {
+      const u = auth.currentUser;
+      if (!u) return;
+      if (!confirm('Hesabınız ve buluttaki tüm şantiye yedekleriniz kalıcı olarak silinecek. Onaylıyor musunuz?')) return;
+      st.textContent = 'Siliniyor...';
+      try {
+        const snap = await db.collection('users').doc(u.uid).collection('kv').get();
+        for (const d of snap.docs) { await d.ref.delete(); }
+        await db.collection('users').doc(u.uid).delete().catch(() => {});
+        await u.delete();
+        document.getElementById('delete-area').style.display = 'none';
+        st.style.color = '#15803D';
+        st.textContent = '✓ Hesabınız ve tüm bulut verileriniz kalıcı olarak silindi.';
+      } catch (e) {
+        st.style.color = '#B3432B';
+        st.textContent = 'Güvenlik gereği oturumu yenileyip tekrar deneyin: ' + e.message;
+      }
+    };
+  </script>
+</body>
+</html>
